@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     public class SmsReceiver extends BroadcastReceiver {
 
-        private SharedPreferences preferences;
         private String TAG = "SmsReceiver";
 
         private final Handler handler; // for executing code on UI thread
