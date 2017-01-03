@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         receiver = new SmsReceiver(new Handler()); // create receiver
         registerReceiver(receiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 
-//        sendBroadcast(new Intent("android.provider.Telephony.SMS_RECEIVED"));
     }
 
     public class SmsReceiver extends BroadcastReceiver {
