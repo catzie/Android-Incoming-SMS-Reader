@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     Object[] pdus = (Object[]) bundle.get("pdus");
                     msgs = new SmsMessage[pdus.length];
                     for(int i=0; i<msgs.length; i++){
+//                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                         msgs[i] = getIncomingMessage(pdus[i], bundle);
                         Log.d(TAG, "msg[i]=" + msgs[i]);
                         final String msgFrom = msgs[i].getOriginatingAddress();
