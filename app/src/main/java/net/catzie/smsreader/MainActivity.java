@@ -45,39 +45,36 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
 
-            if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-                Bundle bundle = intent.getExtras();
+            Bundle bundle = intent.getExtras();
 
-                //---get the SMS message passed in---
-                SmsMessage[] msgs = null;
-                if (bundle != null){
-                    //---retrieve the SMS message received---
-                    try{
-                        Object[] pdus = (Object[]) bundle.get("pdus");
-                        msgs = new SmsMessage[pdus.length];
-                        for(int i=0; i<msgs.length; i++){
-                            msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                            final String msgFrom = msgs[i].getOriginatingAddress();
-                            final String msgBody = msgs[i].getMessageBody();
+            //---get the SMS message passed in---
+            SmsMessage[] msgs = null;
+            if (bundle != null){
+                //---retrieve the SMS message received---
+                try{
+                    Object[] pdus = (Object[]) bundle.get("pdus");
+                    msgs = new SmsMessage[pdus.length];
+                    for(int i=0; i<msgs.length; i++){
+                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                        final String msgFrom = msgs[i].getOriginatingAddress();
+                        final String msgBody = msgs[i].getMessageBody();
 
-                            Log.d(TAG, "SMS Received! From: " + msgFrom + ", Message: " + msgBody);
+                        Log.d(TAG, "SMS Received! From: " + msgFrom + ", Message: " + msgBody);
 
-                            // post the UI-updating code to our Handler
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, "SMS Received!", Toast.LENGTH_LONG).show();
-                                    tv_sms_from.setText("From: " + msgFrom);
-                                    tv_sms_message.setText("Message: " + msgBody);
-                                }
-                            });
+                        // post the UI-updating code to our Handler
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "SMS Received!", Toast.LENGTH_LONG).show();
+                                tv_sms_from.setText("From: " + msgFrom);
+                                tv_sms_message.setText("Message: " + msgBody);
+                            }
+                        });
 
-                        }
-                    }catch(Exception e){
-                            Log.d("Exception caught",e.getMessage());
                     }
+                }catch(Exception e){
+                        Log.d("Exception caught",e.getMessage());
                 }
             }
         }
