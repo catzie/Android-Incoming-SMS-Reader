@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                     Object[] pdus = (Object[]) bundle.get("pdus");
                     msgs = new SmsMessage[pdus.length];
                     for(int i=0; i<msgs.length; i++){
-                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                        msgs[i] = getIncomingMessage(pdus[i], bundle);
+                        Log.d(TAG, "msg[i]=" + msgs[i]);
                         final String msgFrom = msgs[i].getOriginatingAddress();
                         final String msgBody = msgs[i].getMessageBody();
 
@@ -77,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Exception caught",e.getMessage());
                 }
             }
+        }
+
+        private SmsMessage getIncomingMessage(Object aObject, Bundle bundle) {
+            SmsMessage currentSMS;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String format = bundle.getString("format");
+                currentSMS = SmsMessage.createFromPdu((byte[]) aObject, format);
+            } else {
+                currentSMS = SmsMessage.createFromPdu((byte[]) aObject);
+            }
+            return currentSMS;
+
         }
     }
 
